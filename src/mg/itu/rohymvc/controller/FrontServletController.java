@@ -91,7 +91,10 @@ public class FrontServletController extends HttpServlet {
         out.println("<h3>Mapping</h3>");
         out.println("<pre>" + unique + "</pre>");
 
-      
+        out.println("<h3>Method Result</h3>");
+       Object result = utils.invokeMethod(unique);
+        out.println("<h3>Method Return</h3>");
+        out.println("<p>" + result.toString() + "</p>");
     }
 
     out.println("</body>");
