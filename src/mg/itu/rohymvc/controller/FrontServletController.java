@@ -17,26 +17,17 @@ import mg.itu.rohymvc.utilitaire.Utils;
 
 public class FrontServletController extends HttpServlet {
     HashMap<URLMethod, URLMapping> urlmapped;
-    Utils utils;
+    
+       public void init(){
+            urlmapped=(HashMap<URLMethod, URLMapping>)this.getServletContext().getAttribute("urlmappeds");
+      }
 
-    public void init() throws ServletException {
 
-        String scanPackage = this.getInitParameter("packcontroller");
-        utils = new Utils();
-        urlmapped = new HashMap<>();
-
-        try {
-            utils.scanClassPath(scanPackage, urlmapped);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         response.setContentType("text/html;charset=UTF-8");
+         
         String uri = request.getRequestURI();
         String contextPath = request.getContextPath();
         String route = uri.substring(contextPath.length());
@@ -75,9 +66,10 @@ public class FrontServletController extends HttpServlet {
             out.println("<tr>");
             out.println("<td>" + urlMethod.getUrl() + "</td>");
             out.println("<td>" + urlMethod.getMethod() + "</td>");
+        
             out.println("<td>" + mapping + "</td>");
             out.println("</tr>");
-        }
+      }
 
         out.println("</table>");
 
@@ -90,8 +82,9 @@ public class FrontServletController extends HttpServlet {
 
         out.println("<h3>Mapping</h3>");
         out.println("<pre>" + unique + "</pre>");
-
-      
+       Object result = Utils.invokeMethod(unique);
+        out.println("<h3>Method Return</h3>");
+        out.println("<p>" + result.toString() + "</p>");
     }
 
     out.println("</body>");
